@@ -1,12 +1,12 @@
-#Account info write the username of all your account
+# Account info: write the username of all your accounts
 account_username:
-  - ${USER1}
-  - ${USER2}
+  - ${{ secrets.USER1 }}
+  - ${{ secrets.USER2 }}
 
-#Account info write the password of all your account
+# Account info: write the password of all your accounts
 account_password:
-  - ${PASS1}
-  - ${PASS2}
+  - ${{ secrets.PASS1 }}
+  - ${{ secrets.PASS2 }}
 
 # Words to search for giveaway
 words_to_search:
