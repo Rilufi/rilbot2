@@ -5,6 +5,9 @@ if __name__ == "__main__":
     try:
         with open("configuration.yml", "r") as file:
             data = yaml.load(file, Loader=yaml.FullLoader)
+        user_names = data["account_username"]
+        passwords = data["account_password"]
+        
         forever_looop = data["forever_loop"]
         print("Hello world")
         if forever_looop == True:
