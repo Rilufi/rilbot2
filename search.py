@@ -14,12 +14,12 @@ import time
 def remove_days(days_to_remove):
     if days_to_remove < 0:
         days_to_remove = 0
-    
+
     date_format = "%Y-%m-%d"
     today_date = datetime.now().strftime("%Y-%m-%d")
     current_date = datetime.strptime(today_date, date_format)
     new_date = current_date - timedelta(days=days_to_remove)
-    
+
     return(new_date.strftime(date_format))
 
 def get_trend(selenium_session):
@@ -44,11 +44,11 @@ def parse_number(num):
         if "." in num:
             num  = num.replace(".","").replace("B","")
             num  = num + "00000000"
-            
+
         else:
             num = num.replace("B","")
             num  = num + "000000000"
-            
+
     elif "M" in num:
         if "." in num:
             num  = num.replace(".","").replace("M","")
@@ -57,7 +57,7 @@ def parse_number(num):
         else:
             num = num.replace("B","")
             num  = num + "000000"
-    
+
     elif "K" in num:
         if "." in num:
             num  = num.replace(".","").replace("K","")
@@ -68,10 +68,10 @@ def parse_number(num):
     else:
         if "." in num:
             num  = num.replace(".","")
-    
+
     if "," in num:
         num = num.replace(",","")
-    
+
     return int(num)
 
 def convert_string_to_date(date_string):
@@ -103,7 +103,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
     list_of_tweet_url_ = []
     list_len = []
     data_list = []
-    text_list = []    
+    text_list = []
     tweet_info_dict = {"username":"",
     "text":"",
     "id":0,
@@ -142,7 +142,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                     try:
                         lower_data = str(tweet_info.get_property('outerHTML')).lower()
                         splinter = "href=" + p + "/"
-                        
+
                         lower_data = lower_data.split(splinter)
                         user = lower_data[4]
                         user = user.split(p)
@@ -175,8 +175,8 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
                                 tweet_info_dict = {"username":user,"text":text_,"id":int(str(tweet_link.split("status/")[1]).replace("/photo/1","")),"url":tweet_link,"date":str(convert_string_to_date(get_date.replace(p,""))),}
                                 data_list.append(tweet_info_dict)
                                 list_of_tweet_url.append(tweet_link)
-                            
-                            selenium_data.append(tweet_info)                        
+
+                            selenium_data.append(tweet_info)
                             selenium_session.driver.execute_script("arguments[0].scrollIntoView();", last_tweet)
                             time.sleep(0.030)
                         except Exception as e:
@@ -192,7 +192,7 @@ def search_tweet(selenium_session,query="hello",nb_of_tweet_to_search=10):
     except Exception as e:
         print("Error searching " + query + " tweet")
         return(data_list)
-     
+
 def search_tweet_for_better_rt(selenium_session):
     d = Data()
     with open("configuration.yml", "r") as file:
@@ -207,10 +207,10 @@ def search_tweet_for_better_rt(selenium_session):
     url_list = []
     if random_action == True and nb > 0:
         nb = randint(1,nb)
-    
+
     if random_action == False:
         if rt_your_word == False:
-            
+
             tweet_found = search_tweet(selenium_session,str(get_trend(selenium_session)[0]),nb)
             if d.tweet_lang != "any":
                 tweet_found = search_tweet(selenium_session,' lang:'+d.tweet_lang + " " + str(get_trend(selenium_session)[0]),nb)
@@ -245,7 +245,7 @@ def search_tweet_for_better_rt(selenium_session):
                 if len(trend) == 0:
                     trend = get_trend(selenium_session)
                     trend.append("a")
-                print("hello")   
+                print("hello")
             for i in range(nb):
                 tweet_found = search_tweet(selenium_session,str(trend[randint(0,len(trend) - 1)]),1)
                 if d.tweet_lang != "any":
@@ -258,7 +258,7 @@ def search_tweet_for_better_rt(selenium_session):
                     if blacklist == False:
                         url_list.append(tweet["url"])
                     blacklist == False
-            
+
             #url_list = []
             #for tweet in tweet_found_:
             #    url_list.append(tweet)
@@ -274,7 +274,7 @@ def search_tweet_for_better_rt(selenium_session):
                     if blacklist == False:
                         url_list.append(tweet["url"])
                     blacklist == False
-    
+
     return url_list
 
 def list_inside_text(list_one,text):
@@ -321,12 +321,12 @@ def get_giveaway_url(selenium_session):
         for search_word in d.word_to_search:
             if print_data == False:
                 print("### " , search_word)
-                print("### nb of giveaway foud " , nb_of_giveaway_found)
+                print("### number of giveaway(s) found: " , nb_of_giveaway_found)
             if nb_of_giveaway_found <d.nb_of_giveaway and "." not in search_word:
                 text = search_word + ' lang:'+d.tweet_lang + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
                 if d.tweet_lang == "any":
                     text = search_word + " min_faves:"+str(d.minimum_like) + " min_retweets:"+str(d.minimum_rt)+" since:"+str(remove_days(d.maximum_day)) + " " + ban_word
-                
+
                 giveaway = search_tweet(selenium_session,text,nb_of_tweet_to_search)
                 for g in giveaway:
                     giveaway_foud_per_word+=1
@@ -340,7 +340,7 @@ def get_giveaway_url(selenium_session):
                     time.sleep(300)
                 if nb_of_tweet_to_search >= 1000:
                     time.sleep(800)
-                
+
                 for g in giveaway:
                     if g["url"] not in tweets_url and check_for_forbidden_word(g["text"].lower()) == False and check_blacklist(g["username"]) == False and g["url"] not in url_from_file and nb_of_giveaway_found < d.nb_of_giveaway and check_for_forbidden_word(g["username"].lower()) == False:
                         if nb_of_giveaway_found>=d.nb_of_giveaway:
@@ -362,11 +362,11 @@ def get_giveaway_url(selenium_session):
         if len(tweets_id) > d.nb_of_giveaway:
             dif = len(tweets_id) - d.nb_of_giveaway
             tweets_url = tweets_url[:dif]
-            
+
         for url in tweets_url:
             write_into_file("url.txt",url+"\n")
             write_into_file("recent_url.txt",url+"\n")
-                    
+
         tweets_account_to_follow = get_a_better_list(tweets_account_to_follow)
         if print_data == True:
             print(tweets_url)
@@ -374,7 +374,7 @@ def get_giveaway_url(selenium_session):
         print("Number of giveaway found = " + str(nb_of_giveaway_found))
         if nb_of_giveaway_found > 0:
             print("Ending giveaway search the bot will now start doing giveaways")
-        return (tweets_url)    
+        return (tweets_url)
     except Exception as e:
         print("Error occured but we are still doing some giveaways")
         #traceback.print_exc()
