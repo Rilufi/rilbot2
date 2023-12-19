@@ -19,27 +19,27 @@ from random import randint
 
 with open("configuration.yml", "r") as file:
     data = yaml.load(file, Loader=yaml.FullLoader)
-    
+
 MINTIME = data["min_time"]
 MAXTIME = data["max_time"]
 
 class Scraper:
-    
+
     wait_time = 5
     headless = data["headless"]
     options = webdriver.ChromeOptions()
     if headless == True:
         options.add_argument('headless')
     options.add_argument("--log-level=3")  # Suppress all logging levels
-    
-    driver = webdriver.Chrome(options=options)  # to open the chromedriver    
+
+    driver = webdriver.Chrome(options=options)  # to open the chromedriver
     #options = webdriver.FirefoxOptions()
     #options.headless = False
 
     #driver = webdriver.Firefox(options=options)
 
     username_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input'
-    
+
     button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[6]/div'
     password_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div[3]/div/label/div/div[2]/div[1]/input'
     login_button_xpath = '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div'
@@ -59,8 +59,8 @@ def get_news():
         with open("configuration.yml", "r") as file:
             data = yaml.load(file, Loader=yaml.FullLoader)
         url_list = data["flux_rss"]
-        sentence_to_tweet = data["setence_to_tweet"]
-        
+        sentence_to_tweet = data["sentence_to_tweet"]
+
         l = url_list[randint(0,len(url_list) - 1)]
         news_feed = feedparser.parse(l)
 
@@ -95,8 +95,8 @@ def login(S,_username,_password):
         EC.presence_of_element_located((By.XPATH, S.username_xpath)))
 
         username = S.driver.find_element(By.XPATH,S.username_xpath)
-        username.send_keys(_username)    
-        
+        username.send_keys(_username)
+
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.button_xpath)))
 
@@ -112,7 +112,7 @@ def login(S,_username,_password):
 
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.password_xpath)))
-        
+
         password = S.driver.find_element(By.XPATH,S.password_xpath)
         password.send_keys(_password)
         print("password done")
@@ -122,7 +122,7 @@ def login(S,_username,_password):
 
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
-        
+
         login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
         login_button.click()
         print("login done")
@@ -134,10 +134,10 @@ def login(S,_username,_password):
             time.sleep(5)
             if check_login_good(S) == True:
                 return True
-        
+
         if retry_login(S,_username,_password) == True:
             return True
-        
+
         print("wrong username of password")
         print("skipping the account")
         return False
@@ -151,8 +151,8 @@ def retry_login(S,_username,_password):
         EC.presence_of_element_located((By.XPATH, S.username_xpath)))
 
         username = S.driver.find_element(By.XPATH,S.username_xpath)
-        username.send_keys(_username)    
-        
+        username.send_keys(_username)
+
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.button_xpath)))
 
@@ -167,7 +167,7 @@ def retry_login(S,_username,_password):
 
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.password_xpath)))
-        
+
         password = S.driver.find_element(By.XPATH,S.password_xpath)
         password.send_keys(_password)
 
@@ -176,13 +176,13 @@ def retry_login(S,_username,_password):
 
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
-        
+
         login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
         login_button.click()
         return True
         #print("Closing Twitter")
     except:
-        time.sleep(5)        
+        time.sleep(5)
         print("reloging failed")
         return False
 
@@ -193,24 +193,24 @@ def check_login_good(selenium_session):
     EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="AppTabBar_Notifications_Link"]')))
         return True
     except Exception as e:
-        
+
         return False
- 
+
 def accept_coockie(S):
     try:
         S.driver.get(S.test_tweet)
 
         element = WebDriverWait(S.driver, 10).until(
         EC.presence_of_element_located((By.XPATH, S.cookie_button_xpath)))
-        
+
         cookie_button = S.driver.find_element(By.XPATH,S.cookie_button_xpath)
         cookie_button.click()
 
     except:
-        pass    
-    
-    
-    print("coockie done")
+        pass
+
+
+    print("cookie done")
 
 
 def accept_notification(S):
@@ -219,26 +219,26 @@ def accept_notification(S):
 
         element = WebDriverWait(S.driver, 10).until(
         EC.presence_of_element_located((By.XPATH, S.notification_button_xpath)))
-        
+
         cookie_button = S.driver.find_element(By.XPATH,S.notification_button_xpath)
         cookie_button.click()
     except:
-        pass    
+        pass
     try:
         S.driver.get(S.test_tweet)
 
         element = WebDriverWait(S.driver, 10).until(
         EC.presence_of_element_located((By.XPATH, S.cookie_button_xpath)))
-        
+
         cookie_button = S.driver.find_element(By.XPATH,S.cookie_button_xpath)
         cookie_button.click()
 
     except:
-        pass    
-    
+        pass
+
     print("notification done")
-    
- 
+
+
 def like_a_tweet(S,url):
 
     try:
@@ -251,11 +251,11 @@ def like_a_tweet(S,url):
         except:
             element = WebDriverWait(S.driver, 2).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="like"]')))
-        
+
             like_button = S.driver.find_element(By.CSS_SELECTOR,'[data-testid="like"]')
             like_button.click()
-            return True 
-        
+            return True
+
     except:
         print("Bref like" * 10)
         return None
@@ -268,16 +268,16 @@ def reetweet_a_tweet(S,url):
         S.driver.get(url)
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweet"]')))
-        
+
         reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweet"]')
         reetweet_button.click()
 
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')))
-        
+
         reetweet_button = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="retweetConfirm"]')
         reetweet_button.click()
-        
+
         print("reetweet done")
     except:
         print("Bref rt")
@@ -290,14 +290,14 @@ def comment_a_tweet(S,url,text):
         pos = 0
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')))
-        
+
         tweet_info = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')
         for i in range(len(tweet_info)):
             r = tweet_info[i]
             if url.split("twitter.com")[1] in str(r.get_attribute("outerHTML")):
                 pos = i
                 break
-        
+
         element = WebDriverWait(S.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="reply"]')))
         comment_button = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="reply"]')
@@ -333,18 +333,18 @@ def make_a_tweet(S,text):
         S.driver.get("https://twitter.com/compose/tweet")
         time.sleep(10)
         #print("coment part one")
-        
+
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')))
-        
+
         textbox = S.driver.find_element(By.CSS_SELECTOR, '[data-testid="tweetTextarea_0"]')
         textbox.click()
         time.sleep(S.wait_time)
         textbox.send_keys(text)
-        
+
         #print("coment part two")
         time.sleep(5)
-        
+
         element = WebDriverWait(S.driver, 30).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweetButton"]')))
 
@@ -358,7 +358,7 @@ def make_a_tweet(S,text):
         #print("comment part three")
         print("Tweet done")
     except:
-        print("Bref tweet")    
+        print("Bref tweet")
 
 def unfollow_an_account(S,account):
     try:
@@ -389,7 +389,7 @@ def follow_an_account(S,account,t):
         time.sleep(randint(MINTIME,MAXTIME))
         if MAXTIME < 4:
             time.sleep(3)
-        
+
         print("You've followed another account " + account)
         return True
     except Exception as e:
@@ -432,7 +432,7 @@ def get_tweet_info(selenium_session,url):
     try:
         selenium_session.driver.get(url)
         user_tweet = url.split("/")[3]
-        
+
         element = WebDriverWait(selenium_session.driver, 15).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')))
         tweet_info = selenium_session.driver.find_elements(By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')
@@ -442,17 +442,17 @@ def get_tweet_info(selenium_session,url):
             if url.split("twitter.com")[1] in str(r.get_attribute("outerHTML")):
                 pos = i
                 break
-        
+
         element = WebDriverWait(selenium_session.driver, 15).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweet"]')))        
-        
-        
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[data-testid="tweet"]')))
+
+
         _tweet_data = selenium_session.driver.find_elements(By.CSS_SELECTOR,'[data-testid="tweet"]')
         _tweet_text = selenium_session.driver.find_elements(By.CSS_SELECTOR,'[data-testid="tweetText"]')
-        
+
         tweet_data = str(_tweet_data[pos].text).split("\n")
         tweet_text = str(_tweet_text[pos].text)
-        
+
         usr = tweet_data[1]
         if "@" not in usr:
             usr = tweet_data[0]
@@ -494,11 +494,11 @@ def parse_number(num):
         if "." in num:
             num  = num.replace(".","").replace("b","")
             num  = num + "00000000"
-            
+
         else:
             num = num.replace("b","")
             num  = num + "000000000"
-            
+
     elif "m" in num:
         if "." in num:
             num  = num.replace(".","").replace("m","")
@@ -507,7 +507,7 @@ def parse_number(num):
         else:
             num = num.replace("m","")
             num  = num + "000000"
-    
+
     elif "k" in num:
         if "." in num:
             num  = num.replace(".","").replace("k","")
@@ -539,7 +539,7 @@ def get_list_of_my_followings(S,user):
                 tweets_username = S.driver.find_elements(By.CSS_SELECTOR, '[data-testid="UserCell"]')
                 last_user = tweets_username[len(tweets_username) - 1]
                 for tweet_username in tweets_username:
-                
+
                     if tweet_username not in selenium_data:
                         try:
                             parsing_user =str(tweet_username.text).split("\n")
@@ -591,7 +591,7 @@ def get_user_following_count(S,user):
                 return (int(following_count))
             except:
                 following_count = parse_number(get_elem_from_list(S.driver.find_element(By.CSS_SELECTOR, '[data-testid="primaryColumn"]').text.split("\n"),"Following").split(" ")[0])
-                return int(following_count)            
+                return int(following_count)
         except:
             print("Following count error")
             #traceback.print_exc()
@@ -623,12 +623,12 @@ def main_one():
     giveaway_done = 0
     with open("configuration.yml", "r",encoding="utf-8") as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
-    
+
     print("Starting the program")
     print("Searching for Giveaway")
     username_info = data["account_username"]
     password_info = data["account_password"]
-    sentence_to_tweet = data["setence_to_tweet"]
+    sentence_to_tweet = data["sentence_to_tweet"]
     random_rt_and_tweet = data["random_retweet_and_tweet"]
     random_tweet_nb = data["random_tweet_nb"]
     random_retweet_nb = data["random_retweet_nb"]
@@ -652,7 +652,7 @@ def main_one():
         print("Connecting to " + str(username_info[i]))
         time.sleep(1)
         S = Scraper()
-        
+
         if login(S,username_info[i],password_info[i]) == False:
             account_num = 0
             continue
@@ -663,12 +663,12 @@ def main_one():
             account_num = 0
             continue
         accept_coockie(S)
-        time.sleep(S.wait_time)    
+        time.sleep(S.wait_time)
         accept_notification(S)
         time.sleep(S.wait_time)
         accept_coockie(S)
         time.sleep(S.wait_time)
-        
+
         for w in range(10):
             if check_if_good_account_login(S,username_info[i]) == False:
                 time.sleep(2)
@@ -683,14 +683,14 @@ def main_one():
                     account_num = 0
                     continue
                 accept_coockie(S)
-                time.sleep(S.wait_time)    
+                time.sleep(S.wait_time)
                 accept_notification(S)
                 time.sleep(S.wait_time)
                 accept_coockie(S)
                 time.sleep(S.wait_time)
             else:
                 break
-                    
+
         giveaway_g = 0
         follow_nbr = 0
 
@@ -704,25 +704,25 @@ def main_one():
             else:
                 big_follow = x
 
-        
+
         if less_than_4500 >= 3:
             nb_of_following_t1 = 1
-        
+
         else:
             nb_of_following_t1 = big_follow + 1
 
         account_to_unfollow = ""
         if nb_of_following_t1 > 4500:
             all_my_following = get_list_of_my_followings(S,username_info[i])
-            if all_my_following != False:    
+            if all_my_following != False:
                 print("You got to much following bot going to unfollow some people")
                 for j in range(1000):
                     account_to_unfollow = all_my_following[len(all_my_following) - 1 - j]
                     #print("unfollowing: " , account_to_unfollow , " nb: " , j+1)
                     unfollow_an_account(S,account_to_unfollow)
                     time.sleep(3)
-                nb_of_following_t2 = get_user_following_count(S,username_info[i])    
-                print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")              
+                nb_of_following_t2 = get_user_following_count(S,username_info[i])
+                print("Unfollow done bot unfollowed " , str(nb_of_following_t1-nb_of_following_t2) , " accounts you now have " , nb_of_following_t2 , " followings")
                 print("Bot sleeping 20 minutes to avoid twitter rate limit")
                 time.sleep(60*20)
         if crash_or_no == True:
@@ -736,11 +736,11 @@ def main_one():
                     crash_follow.append(info["username"])
                     for g in get_who_to_follow(S,t,info["text"],info["username"]):
                         tt_follow.append(g)
-                
+
                 for tt in tt_follow:
                     t_follow.append(tt)
             t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow,S)
-            
+
             if len(t_follow) == 0:
                 print("No giveaway found...")
                 if random_rt_and_tweet == True:
@@ -753,10 +753,10 @@ def main_one():
                     make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                     try:
                         rt_url = search_tweet_for_better_rt(S)
-                    
+
                         for i in range(len(rt_url)):
                             like = like_a_tweet(S,rt_url[i])
-                            if like == True:            
+                            if like == True:
                                 reetweet_a_tweet(S,rt_url[i])
                             time.sleep(randint(MINTIME,MAXTIME))
                     except:
@@ -769,19 +769,19 @@ def main_one():
             for t in t_follows:
                 if t != "":
                     t_follow.append(t.replace(" ",""))
-            
+
             t_follow = list(dict.fromkeys(t_follow))
             for c in t_follow:
                 if c.lower() not in ttt_follow:
                     ttt_follow.append(c.lower())
             ttt_follow = list(dict.fromkeys(ttt_follow))
-            
+
             try:
                 ttt_follow = get_a_better_list(t_follow)
             except:
                 pass
-            
-            
+
+
             for i in range(len(ttt_follow)):
                 if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
                     if ttt_follow[i].lower().replace("@","") not in tttt_follow:
@@ -801,13 +801,13 @@ def main_one():
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
-                time.sleep(S.wait_time)    
+                time.sleep(S.wait_time)
                 if like == True:
                     giveaway_done  += 1
                     giveaway_g += 1
                     reetweet_a_tweet(S,t)
-                    #time.sleep(S.wait_time)        
-                    try:       
+                    #time.sleep(S.wait_time)
+                    try:
                         if t_comment_or_not[idxx] == True:
                             comment_a_tweet(S,t,t_full_comment[idxx])
                         time.sleep(randint(MINTIME,MAXTIME))
@@ -821,13 +821,13 @@ def main_one():
                     time.sleep(5400)
                 print(idxx)
                 idxx = idxx + 1
-            
+
             for account_to_follow in tttt_follow:
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
                 if account_to_follow.lower() not in alph_follow:
                     follow_an_account(S,account_to_follow,2)
-                    follow_nbr +=1            
-            
+                    follow_nbr +=1
+
             if random_rt_and_tweet == True:
                 if random_action == True and random_tweet_nb > 0:
                     random_tweet_nb = randint(1,random_tweet_nb)
@@ -838,15 +838,15 @@ def main_one():
                 make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                 try:
                     rt_url = search_tweet_for_better_rt(S)
-                
+
                     for i in range(len(rt_url)):
                         like = like_a_tweet(S,rt_url[i])
-                        if like == True:            
+                        if like == True:
                             reetweet_a_tweet(S,rt_url[i])
                         time.sleep(randint(MINTIME,MAXTIME))
                 except:
                     print("ok")
-        
+
         if crash_or_no == False:
             if account_num == 1:
                 tweet_from_url = get_giveaway_url(S)
@@ -862,7 +862,7 @@ def main_one():
 
             else:
                 tweet_from_url = print_file_info("recent_url.txt").split("\n")
-            
+
             t_comment_or_not , t_full_comment, t_follows = giweaway_from_url_file(tweet_txt,crash_follow,S)
             if len(t_follow) == 0:
                 print("No giveaway found...")
@@ -879,7 +879,7 @@ def main_one():
 
                         for i in range(len(rt_url)):
                             like = like_a_tweet(S,rt_url[i])
-                            if like == True:            
+                            if like == True:
                                 reetweet_a_tweet(S,rt_url[i])
                             time.sleep(randint(MINTIME,MAXTIME))
                     except:
@@ -892,7 +892,7 @@ def main_one():
             for t in t_follows:
                 if t != "":
                     t_follow.append(t.replace(" ",""))
-            
+
             t_follow = list(dict.fromkeys(t_follow))
             for c in t_follow:
                 if c.lower() not in ttt_follow:
@@ -903,14 +903,14 @@ def main_one():
                 ttt_follow = get_a_better_list(t_follow)
             except:
                 pass
-            
-                        
+
+
             for i in range(len(ttt_follow)):
                 if ttt_follow[i] != "" and ttt_follow[i].lower() not in tttt_follow:
                     if ttt_follow[i].lower().replace("@","") not in tttt_follow:
                         tttt_follow.append(ttt_follow[i])
-                
-            
+
+
             alph_list = int(len(tttt_follow)/2)
 
             for i in range(alph_list):
@@ -925,13 +925,13 @@ def main_one():
             for t in tweet_from_url:
                 print("Giveaway number " + str(giveaway_g) + " / " + str(len(tweet_from_url)) + " all giveaway (even the one already done) " + str(giveaway_done))
                 like = like_a_tweet(S,t)
-                time.sleep(S.wait_time)    
+                time.sleep(S.wait_time)
                 if like == True:
                     giveaway_done  += 1
                     giveaway_g += 1
                     reetweet_a_tweet(S,t)
-                    #time.sleep(S.wait_time)        
-                    try:       
+                    #time.sleep(S.wait_time)
+                    try:
                         if t_comment_or_not[idxx] == True:
                             comment_a_tweet(S,t,t_full_comment[idxx])
                         time.sleep(randint(MINTIME,MAXTIME))
@@ -945,13 +945,13 @@ def main_one():
                     time.sleep(5400)
                 print(idxx)
                 idxx = idxx + 1
-            
+
             for account_to_follow in tttt_follow:
                 print("Account n " + str(follow_nbr) + " / " + str(len(tttt_follow)) + " account name: " + account_to_follow)
                 if account_to_follow.lower() not in alph_follow:
                     follow_an_account(S,account_to_follow,2)
-                    follow_nbr +=1            
-            
+                    follow_nbr +=1
+
             if random_rt_and_tweet == True:
                 if random_action == True and random_tweet_nb > 0:
                     random_tweet_nb = randint(1,random_tweet_nb)
@@ -962,15 +962,15 @@ def main_one():
                 make_a_tweet(S,sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)])
                 try:
                     rt_url = search_tweet_for_better_rt(S)
-                
+
                     for i in range(len(rt_url)):
                         like = like_a_tweet(S,rt_url[i])
-                        if like == True:            
+                        if like == True:
                             reetweet_a_tweet(S,rt_url[i])
                         time.sleep(randint(MINTIME,MAXTIME))
                 except:
                     print("ok")
-                
+
         print("Giveaway finished for this account sleeping a bit")
         giveaway_g = 0
         idxx = 0
