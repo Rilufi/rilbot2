@@ -1,13 +1,9 @@
 # Account info: write the username of all your accounts
-account_username:
-  - ${{ secrets.USER1 }}
-  - ${{ secrets.USER2 }}
+#account_username:
 
 # Account info: write the password of all your accounts
-account_password:
-  - ${{ secrets.PASS1 }}
-  - ${{ secrets.PASS2 }}
-
+#account_password:
+ 
 # Words to search for giveaway
 words_to_search:
   - "giveaway"
@@ -247,9 +243,9 @@ three_or_more_poeple_list:
 
 # Accounts we want to invite you must but a space at the end of each account and a space at the	start of the first account
 accounts_to_tag:
-  - "@boturitter"
-  - "@nasobot"
-  - "@botoronga"
+  - " @boturitter"
+  - "@nasobot "
+  - "@botoronga "
 
 # Accounts that we don't want to follow
 accounts_to_blacklist:
@@ -531,17 +527,17 @@ headless: True
 
 #Add your own flux rss those will be used to make tweet after doing giveaway
 flux_rss:
-  - "https://www.france24.com/fr/rss"
-  - "https://www.france24.com/fr/europe/rss"
-  - "https://www.france24.com/fr/france/rss"
-  - "https://www.france24.com/fr/afrique/rss"
-  - "https://www.france24.com/fr/moyen-orient/rss"
-  - "https://www.france24.com/fr/am%C3%A9riques/rss"
-  - "https://www.france24.com/fr/asie-pacifique/rss"
-  - "https://www.france24.com/fr/%C3%A9co-tech/rss"
-  - "https://www.france24.com/fr/sports/rss"
-  - "https://www.france24.com/fr/culture/rss"
-  - "https://www.france24.com/fr/plan%C3%A8te/rss"
+  - "https://www.bbc.co.uk/news/world/rss.xml"
+  - "https://www.aljazeera.com/xml/rss/all.xml"
+  - "https://www.nationalgeographic.com/content/ngeo/feed/domestic.xml"
+  - "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml"
+  - "https://www.sciencemag.org/rss/news_current.xml"
+  - "https://www.theverge.com/rss/index.xml"
+  - "https://www.theguardian.com/world/rss"
+  - "https://www.sportingnews.com/us/rss"
+  - "https://www.hollywoodreporter.com/tv/tv-news.rss"
+  - "https://www.sciencenews.org/feed"
+  - "https://www.popsci.com/rss.xml"
 
 # If copy is set to True the bot will copy comment to have way better comment overall
 copy: True
