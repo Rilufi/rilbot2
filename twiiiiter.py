@@ -618,7 +618,7 @@ def forever_loop():
             time.sleep(600)
         time.sleep(randint(86400,172800))
 
-def main_one():
+def main_one(username, password):
     print("Inside main one")
     giveaway_done = 0
     with open("configuration.yml", "r",encoding="utf-8") as file:
@@ -626,8 +626,8 @@ def main_one():
 
     print("Starting the program")
     print("Searching for Giveaway")
-    username_info = data["account_username"]
-    password_info = data["account_password"]
+#    username_info = data["account_username"]
+#    password_info = data["account_password"]
     sentence_to_tweet = data["sentence_to_tweet"]
     random_rt_and_tweet = data["random_retweet_and_tweet"]
     random_tweet_nb = data["random_tweet_nb"]
