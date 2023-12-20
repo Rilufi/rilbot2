@@ -8,7 +8,7 @@ if __name__ == "__main__":
         password = os.environ["PASS1"]
         
         print("Hello world")
-        if forever_looop == True:
+        if forever_loop == True:
             forever_loop(username, password)
         else:    
             main_one(username, password)
