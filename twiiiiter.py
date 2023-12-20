@@ -626,8 +626,8 @@ def main_one(username, password):
 
     print("Starting the program")
     print("Searching for Giveaway")
-#    username_info = data["account_username"]
-#    password_info = data["account_password"]
+    username_info = username #data["account_username"]
+    password_info = password #data["account_password"]
     sentence_to_tweet = data["sentence_to_tweet"]
     random_rt_and_tweet = data["random_retweet_and_tweet"]
     random_tweet_nb = data["random_tweet_nb"]
