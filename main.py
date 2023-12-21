@@ -4,7 +4,7 @@ import os
 
 if __name__ == "__main__":
     try:
-        username = os.environ.get("USER1")
+        username = 'lufilir'#os.environ.get("USER1")
         password = os.environ.get("PASS1")
         
         print("Hello world")
