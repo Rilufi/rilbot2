@@ -12,8 +12,8 @@ if __name__ == "__main__":
           sys.exit(1)
         else:
         # Add these lines before the login attempt to print the values
-        print(f"Username: {username}")
-        print(f"Password: {password}")
+          print(f"Username: {username}")
+          print(f"Password: {password}")
         
         print("Hello world")
         if forever_loop == True:
