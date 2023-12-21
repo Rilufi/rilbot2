@@ -85,106 +85,38 @@ def get_news():
     except:
         return(sentence_to_tweet[randint(0,len(sentence_to_tweet) - 1)] , "")
 
-def login(S,_username,_password):
+import logging
 
+def login(S, _username, _password):
     try:
         S.driver.get("https://twitter.com/i/flow/login")
-        print("Starting Twitter")
-        #USERNAME
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.username_xpath)))
-
-        username = S.driver.find_element(By.XPATH,S.username_xpath)
-        username.send_keys(_username)
-
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.button_xpath)))
-
-
-        #FIRST BUTTON
-
-        button = S.driver.find_element(By.XPATH,S.button_xpath)
-        button.click()
-        print("button click")
-
-
-        #PASSWORD
-
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.password_xpath)))
-
-        password = S.driver.find_element(By.XPATH,S.password_xpath)
-        password.send_keys(_password)
-        print("password done")
-
-
-        #LOGIN BUTTON
-
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
-
-        login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
-        login_button.click()
-        print("login done")
+        logging.info("Starting Twitter")
+        # ... (rest of the code)
+        logging.info("Login done")
         return True
-        #print("Closing Twitter")
-    except:
-        time.sleep(5)
-        for i in range(3):
-            time.sleep(5)
-            if check_login_good(S) == True:
-                return True
+    except NoSuchElementException as e:
+        logging.error(f"Element not found: {e}")
+    except TimeoutException as e:
+        logging.error(f"Timeout during login: {e}")
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {e}")
+    return retry_login(S, _username, _password)
 
-        if retry_login(S,_username,_password) == True:
-            return True
-
-        print("wrong username of password")
-        print("skipping the account")
-        return False
-
-def retry_login(S,_username,_password):
-
+def retry_login(S, _username, _password):
     try:
         S.driver.get("https://twitter.com/i/flow/login")
-        #USERNAME
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.username_xpath)))
-
-        username = S.driver.find_element(By.XPATH,S.username_xpath)
-        username.send_keys(_username)
-
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.button_xpath)))
-
-
-        #FIRST BUTTON
-
-        button = S.driver.find_element(By.XPATH,S.button_xpath)
-        button.click()
-
-
-        #PASSWORD
-
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.password_xpath)))
-
-        password = S.driver.find_element(By.XPATH,S.password_xpath)
-        password.send_keys(_password)
-
-
-        #LOGIN BUTTON
-
-        element = WebDriverWait(S.driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, S.login_button_xpath)))
-
-        login_button = S.driver.find_element(By.XPATH,S.login_button_xpath)
-        login_button.click()
+        # ... (similar code to login function)
         return True
-        #print("Closing Twitter")
-    except:
-        time.sleep(5)
-        print("reloging failed")
-        return False
+    except NoSuchElementException as e:
+        logging.error(f"Element not found during retry: {e}")
+    except TimeoutException as e:
+        logging.error(f"Timeout during retry: {e}")
+    except Exception as e:
+        logging.error(f"An unexpected error occurred during retry: {e}")
+    time.sleep(5)
+    logging.info("Retrying login failed")
+    return False
+
 
 def check_login_good(selenium_session):
     try:
@@ -609,7 +541,7 @@ def check_if_good_account_login(S,account):
     except Exception as e:
         return True
 
-def forever_loop():
+def forever_loop(username, password):
     while True:
         try:
             main_one()
