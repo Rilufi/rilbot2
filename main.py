@@ -4,8 +4,16 @@ import os
 
 if __name__ == "__main__":
     try:
-        username = 'lufilir'#os.environ.get("USER1")
+        username = os.environ.get("USER1")
         password = os.environ.get("PASS1")
+        # Check if variables are set
+        if username is None or password is None:
+          print("Error: User credentials not set.")
+          sys.exit(1)
+        else:
+        # Add these lines before the login attempt to print the values
+        print(f"Username: {username}")
+        print(f"Password: {password}")
         
         print("Hello world")
         if forever_loop == True:
