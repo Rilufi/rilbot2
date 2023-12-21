@@ -47,8 +47,4 @@ jobs:
 
                   PASS1: ${{ secrets.PASS1 }}
 
-                  USER2: ${{ secrets.USER2 }}
-
-                  PASS2: ${{ secrets.PASS2 }}
-
         run: python main.py
