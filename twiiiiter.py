@@ -544,7 +544,7 @@ def check_if_good_account_login(S,account):
 def forever_loop(username, password):
     while True:
         try:
-            main_one()
+            main_one(username, password)
         except Exception as e:
             print("Flop " + str(e))
             time.sleep(600)
@@ -558,8 +558,8 @@ def main_one(username, password):
 
     print("Starting the program")
     print("Searching for Giveaway")
-    username_info = username #data["account_username"]
-    password_info = password #data["account_password"]
+    username_info = [username] #data["account_username"]
+    password_info = [password] #data["account_password"]
     sentence_to_tweet = data["sentence_to_tweet"]
     random_rt_and_tweet = data["random_retweet_and_tweet"]
     random_tweet_nb = data["random_tweet_nb"]
