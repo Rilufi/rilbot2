@@ -4,8 +4,8 @@ import os
 
 if __name__ == "__main__":
     try:
-        username = os.environ["USER2"]
-        password = os.environ["PASS2"]
+        username = os.environ.get("USER2")
+        password = os.environ.get("PASS2")
         
         print("Hello world")
         if forever_loop == True:
